@@ -74,11 +74,14 @@ void buildCodeTable(Node *root, const string &code, unordered_map<char, string> 
         return;
 
     // Leaf node, add the character and its code to the code table
-    if (!root->left && !root->right)
+    if (root->data != '$')
     {
-        codeTable[root->data] = code;
+        if (!root->left && !root->right)
+        {
+            codeTable[root->data] = code;
+        }
+        cout << root->data << "----" << codeTable[root->data] << "-----" << root->frequency << endl;
     }
-    cout << root->data << "----" << codeTable[root->data] << "-----" << root->frequency << endl;
     // Traverse left and right subtrees
     buildCodeTable(root->left, code + "0", codeTable);
     buildCodeTable(root->right, code + "1", codeTable);
