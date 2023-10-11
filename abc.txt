@@ -1,0 +1,40 @@
+CREATE TABLE Sailors (
+    sid INT PRIMARY KEY,
+    sname VARCHAR(255),
+    rating INT,
+    age INT
+);
+
+CREATE TABLE Boats (
+    bid INT PRIMARY KEY,
+    bname VARCHAR(255),
+    color VARCHAR(255)
+);
+
+CREATE TABLE Reserve (
+    sid INT,
+    bid INT,
+    day DATE,
+    FOREIGN KEY (sid) REFERENCES Sailors(sid),
+    FOREIGN KEY (bid) REFERENCES Boats(bid),
+    PRIMARY KEY (sid, bid, day)
+);
+
+
+SELECT AVG(age) AS average_age
+FROM Sailors;
+
+SELECT *
+FROM Sailors
+WHERE sid IN (SELECT sid FROM Reserve WHERE bid = '112' AND day = '2022-10-12');
+
+
+SELECT sname
+FROM Sailors
+WHERE sid IN (SELECT sid FROM Reserve GROUP BY sid HAVING COUNT(bid) >= 2);
+
+
+SELECT B.bname, COUNT(R.bid) AS boat_count
+FROM Boats B, Reserve R
+WHERE B.bid = R.bid
+GROUP BY B.bid, B.bname;
